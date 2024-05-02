@@ -127,13 +127,14 @@ insert into personel values (6,'2009/07/04',4670);
 CREATE TABLE Miasto (
     IdMiasto integer  NOT NULL,
     Miasto varchar2(50)  NOT NULL,
-    IdKraj integer  NOT NULL,
     CONSTRAINT Miasto_pk PRIMARY KEY (IdMiasto)
 ) ;
 INSERT INTO Miasto VALUES(0,'Warszawa');
 INSERT INTO Miasto VALUES(1,'Bytom');
 INSERT INTO Miasto VALUES(2,'Plock');
 
+-- tables
+-- Table: Miasto
 -- Table: Adres
 CREATE TABLE Adres (
     IdAdres integer  NOT NULL,
@@ -166,16 +167,18 @@ INSERT INTO Choroba VALUES (7,'Przepuklina');
 
 -- Table: Historia_Chorob
 CREATE TABLE Historia_Chorob (
+    IdHistoria_Chorob integer NOT NULL,
 	IdLeczona_Choroba integer  NOT NULL,
     IdPacjent integer  NOT NULL,
     IdChoroba integer  NOT NULL,
-    CONSTRAINT Historia_Chorob_pk PRIMARY KEY (IdPacjent)
+    CONSTRAINT Historia_Chorob_pk PRIMARY KEY (IdHistoria_Chorob)
 ) ;
-INSERT INTO Historia_Chorob VALUES (2,3,7);
-INSERT INTO Historia_Chorob VALUES (6,12,6);
-INSERT INTO Historia_Chorob VALUES (5,10,7);
-INSERT INTO Historia_Chorob VALUES (1,2,1);
-INSERT INTO Historia_Chorob VALUES (2,3,1);
+
+INSERT INTO Historia_Chorob VALUES (1,2,3,7);
+INSERT INTO Historia_Chorob VALUES (2,6,12,6);
+INSERT INTO Historia_Chorob VALUES (3,5,10,7);
+INSERT INTO Historia_Chorob VALUES (4,1,2,1);
+INSERT INTO Historia_Chorob VALUES (5,2,3,1);
 
 -- Table: Objawy
 CREATE TABLE Objawy (
@@ -199,7 +202,7 @@ CREATE TABLE Leczona_Choroba (
     Stadium varchar2(20)  NULL,
     CONSTRAINT Leczona_Choroba_pk PRIMARY KEY (IdLeczona_Choroba)
 ) ;
-INSERT INTO Leczona_Choroba VALUES (7,3,5,'1990-09-10',,NULL);
+INSERT INTO Leczona_Choroba VALUES (7,5,1,'1990-09-10',1,NULL);
 INSERT INTO Leczona_Choroba VALUES (8,2,4,'1980-09-05',3,'I');
 INSERT INTO Leczona_Choroba VALUES (1,2,1,'2013-10-17',0,'III');
 INSERT INTO Leczona_Choroba VALUES (2,3,2,'2010-08-18',2,'I');
@@ -223,26 +226,25 @@ INSERT INTO LEK VALUES (5,'Kloksacylina');
 -- Table: Lek_Choroba
 CREATE TABLE Lek_Choroba (
     IdLek integer  NOT NULL,
-    Dawka number(3,2)  NOT NULL,
+    Dawka number(10,2)  NOT NULL,
     IdLeczona_Choroba integer  NOT NULL,
     Reakcja integer  NULL,
     CONSTRAINT Lek_Choroba_pk PRIMARY KEY (IdLek)
 ) ;
 
-INSERT INTO Lek_Choroba VALUES (7,1,30,4);
-INSERT INTO Lek_Choroba VALUES (7,1,30,5);
-INSERT INTO Lek_Choroba VALUES (7,1,30,NULL);
-INSERT INTO Lek_Choroba VALUES (7,1,30,4);
-INSERT INTO Lek_Choroba VALUES (7,1,30,NULL);
-INSERT INTO Lek_Choroba VALUES (7,1,30,NULL);
+INSERT INTO Lek_Choroba VALUES (1,3.2,3,1);
+INSERT INTO Lek_Choroba VALUES (2,10,7,2);
+INSERT INTO Lek_Choroba VALUES (3,30,2,4);
+INSERT INTO Lek_Choroba VALUES (2,50,2,1);
+INSERT INTO Lek_Choroba VALUES (5,60,4,NULL);
 
 -- Table: Lekarz
 CREATE TABLE Lekarz (
     IdLekarz integer  NOT NULL,
     IdSpecjalizacja integer  NULL,
-	Ukonczenie_specjalizacji date  NULL,
-    CONSTRAINT Lekarz_pk PRIMARY KEY (IdLekarz)
+	Ukonczenie_specjalizacji date  NULL
 ) ;
+
 INSERT INTO Lekarz VALUES (1,NULL,NULL);
 INSERT INTO Lekarz VALUES (4,2,'1994/08/01');
 INSERT INTO Lekarz VALUES (5,2,'1998/10/05');
@@ -269,6 +271,7 @@ CREATE TABLE Oddzial (
     IdPietro integer  NOT NULL,
     CONSTRAINT Oddzial_pk PRIMARY KEY (IdOddzial)
 ) ;
+
 INSERT INTO Oddzial VALUES (1,'Chirurgia ogolna',1);
 INSERT INTO Oddzial VALUES (2,'Chorob wewnetrznych',1);
 INSERT INTO Oddzial VALUES (3,'Intensywnej terapii',2);
@@ -335,27 +338,29 @@ CREATE TABLE Personel (
     Pensja number(10,2)  NULL,
     CONSTRAINT Personel_pk PRIMARY KEY (IdPersonel)
 ) ;
-INSERT INTO Personel VALUES (1,'Lekarskie','18/05/13',2000);
-INSERT INTO Personel VALUES (4,'Lekarskie','95/06/28',6230);
-INSERT INTO Personel VALUES (5,'Lekarskie','96/11/02',5790,9);
-INSERT INTO Personel VALUES (13,'Srednie','89/06/09',3800);
-INSERT INTO Personel VALUES (6,'Podstawowe','21/04/21',NULL);
-INSERT INTO Personel VALUES (8,'Lekarskie','09/07/04',4670);
-INSERT INTO Personel VALUES (11,'Lekarskie','06/07/15',6000);
+INSERT INTO Personel VALUES (1,'2018/05/13',2000);
+INSERT INTO Personel VALUES (4,'1995/06/28',6230);
+INSERT INTO Personel VALUES (5,'1996/11/02',5790);
+INSERT INTO Personel VALUES (13,'1989/06/09',3800);
+INSERT INTO Personel VALUES (6,'2021/04/21',NULL);
+INSERT INTO Personel VALUES (8,'2009/07/04',4670);
+INSERT INTO Personel VALUES (11,'2006/07/15',6000);
 
 -- Table: Personel_Oddzial
 CREATE TABLE Personel_Oddzial (
+    IdPersonel_Oddzial integer NOT NULL,
     IdPersonel integer  NOT NULL,
     IdOddzial integer  NOT NULL,
     RozpPracy char(5)  NOT NULL,
     KoniecPracy char(5)  NOT NULL,
-    CONSTRAINT Personel_Oddzial_pk PRIMARY KEY (IdPersonel)
+    CONSTRAINT Personel_Oddzial_pk PRIMARY KEY (IdPersonel_Oddzial)
 ) ;
-INSERT INTO Personel_Oddzial VALUES (1,1,08:00,15:00);
-INSERT INTO Personel_Oddzial VALUES (2,4,09:00,15:00);
-INSERT INTO Personel_Oddzial VALUES (3,5,09:30,14:00);
-INSERT INTO Personel_Oddzial VALUES (3,5,08:00,14:00);
-INSERT INTO Personel_Oddzial VALUES (3,6,08:00,17:00);
+
+INSERT INTO Personel_Oddzial VALUES (1,1,1,'08:00','15:00');
+INSERT INTO Personel_Oddzial VALUES (2,4,2,'09:00','15:00');
+INSERT INTO Personel_Oddzial VALUES (3,5,3,'09:30','14:00');
+INSERT INTO Personel_Oddzial VALUES (4,5,3,'08:00','14:00');
+INSERT INTO Personel_Oddzial VALUES (5,5,4,'08:00','17:00');
 
 -- Table: Pietro
 CREATE TABLE Pietro (
@@ -375,9 +380,10 @@ CREATE TABLE Sala (
     IdOddzial integer  NOT NULL,
     CONSTRAINT Sala_pk PRIMARY KEY (IdSala)
 ) ;
-INSERT INTO Sala VALUES (1,10,2,1);
-INSERT INTO Sala VALUES (2,12,5,1);
-INSERT INTO Sala VALUES (3,10,6,3);
+
+INSERT INTO Sala VALUES (1,2,1);
+INSERT INTO Sala VALUES (2,5,1);
+INSERT INTO Sala VALUES (3,6,3);
 
 -- Table: Specjalizacja
 CREATE TABLE Specjalizacja (
@@ -501,4 +507,3 @@ ALTER TABLE Adres ADD CONSTRAINT Ulica_Miasto
     REFERENCES Miasto (IdMiasto);
 
 -- End of file.
-
